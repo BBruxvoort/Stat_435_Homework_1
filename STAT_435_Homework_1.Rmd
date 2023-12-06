@@ -1,0 +1,168 @@
+---
+title: "Stat 435 Homework 1"
+author: "Brian Bruxvoort"
+date: "8/30/2023"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+#Part 1, Page 48, Question 1, part a
+1) n is fixed at 20 in this scenario so it is satisfied.
+2) There are only 2 outcomes, either the Cheerio makes it in the infant's mouth or it does not, so that is satisfied.
+3) There is the same probability of success, at 50%, so that is satisfied.
+4) The two outcomes are independent of each other because if the infant successfully gets the Cheerio in its mouth, that doesn't influence if it will on the next try, so that is satisfied.
+5) W is the number of successes.
+
+#Part 1, Page 48, Question 1, part b
+1) n is fixed at 25 in this scenario so it is satisfied.
+2) There are only 2 outcomes, either the ball is sunk or it does not, so that is satisfied.
+3) There is the same probability of success, at 50%, so that is satisfied.
+4) The two outcomes are independent of each other because if the ball is sunk, that doesn't influence if it will be on the next try, so that is satisfied.
+5) W is the number of successes.
+
+#Part 2, Page 49, Question 2, part a
+```{r}
+#Wald
+w<-9 
+n<-20 
+alpha<-0.05 
+pi.hat<-w/n 
+var.wald<-pi.hat*(1-pi.hat)/n 
+lower<-pi.hat-qnorm(p=1-alpha/2)*sqrt(var.wald) 
+upper<-pi.hat+qnorm(p=1-alpha/2)*sqrt(var.wald) 
+round(data.frame(lower,upper),4)
+
+#Wilson
+pi.tilde<-(w+qnorm(p=1-alpha/2)^2/2)/(n+qnorm(p=1-alpha/2)^2)
+pi.tilde
+
+round(pi.tilde+qnorm(p=c(alpha/2,1-alpha/2))* sqrt(n)/(n+qnorm(p=1-alpha/2)^2)*sqrt(pi.hat* (1-pi.hat)+qnorm(1-alpha/2)^2/(4*n)),4)
+
+#Agresti-Coull
+var.ac<-pi.tilde*(1-pi.tilde)/(n+qnorm(p=1-alpha/2) ^2)  
+round(pi.tilde+qnorm(p=c(alpha/2,1-alpha/2))* sqrt(var.ac),4)
+```
+
+These intervals are telling us the confidence interval and how confident we are that the infant will successfully put 9 Cheerios in its mouth out of 20 times.
+
+#Part 2, Page 49, Question 2, part b
+```{r}
+#Wald
+w<-15 
+n<-25 
+alpha<-0.05 
+pi.hat<-w/n 
+var.wald<-pi.hat*(1-pi.hat)/n 
+lower<-pi.hat-qnorm(p=1-alpha/2)*sqrt(var.wald) 
+upper<-pi.hat+qnorm(p=1-alpha/2)*sqrt(var.wald) 
+round(data.frame(lower,upper),4)
+
+#Wilson
+pi.tilde<-(w+qnorm(p=1-alpha/2)^2/2)/(n+qnorm(p=1-alpha/2)^2)
+pi.tilde
+
+round(pi.tilde+qnorm(p=c(alpha/2,1-alpha/2))* sqrt(n)/(n+qnorm(p=1-alpha/2)^2)*sqrt(pi.hat* (1-pi.hat)+qnorm(1-alpha/2)^2/(4*n)),4)
+
+#Agresti-Coull
+var.ac<-pi.tilde*(1-pi.tilde)/(n+qnorm(p=1-alpha/2) ^2)  
+round(pi.tilde+qnorm(p=c(alpha/2,1-alpha/2))* sqrt(var.ac),4)
+```
+
+These intervals are telling us the confidence interval and how confident we are that the ball will successfully be sunk 15 times out of 25 attempts. 
+
+#Part 3, Page 51, Question 9, part a
+```{r}
+#Wald
+w<-1 
+n<-80
+alpha<-0.05 
+pi.hat<-w/n 
+var.wald<-pi.hat*(1-pi.hat)/n 
+lower<-pi.hat-qnorm(p=1-alpha/2)*sqrt(var.wald) 
+upper<-pi.hat+qnorm(p=1-alpha/2)*sqrt(var.wald) 
+round(data.frame(lower,upper),4)
+```
+
+We are 95% confident that the probability that a randomly selected resident opposes the tax will fall between 0 and 3.68% of the time.
+
+#Part 3, Page 51, Question 9, part b
+```{r}
+#Wilson
+pi.tilde<-(w+qnorm(p=1-alpha/2)^2/2)/(n+qnorm(p=1-alpha/2)^2)
+pi.tilde
+
+round(pi.tilde+qnorm(p=c(alpha/2,1-alpha/2))* sqrt(n)/(n+qnorm(p=1-alpha/2)^2)*sqrt(pi.hat* (1-pi.hat)+qnorm(1-alpha/2)^2/(4*n)),4)
+```
+
+We are 95% confident that the probability that a randomly selected resident opposes the tax will fall between 0.22% and 0.0675% of the time.
+
+#Part 3, Page 51, Question 9, part c
+It is possible but it is extremely unlikely because the closer we get to 1, the more inaccurate the model/interval will become.
+
+#Part 3, Page 51, Question 9, part d
+We would prefer the Wilson interval because it gives us a more accurate interval. We can tell this because the interval is smaller.
+
+#Part 4, Page 52, Question 10
+On attached document.
+
+#Part 5, Page 52, Question 13, part b, Wilson
+```{r}
+alpha <- 0.05
+n <- 40
+w <- 0: n
+pi.hat <- w / n
+pi.seq <- seq ( from = .001 , to = .999 , by = .0005)
+#Wilson
+pi.tilde<-(w+qnorm(p=1-alpha/2)^2/2)/(n+qnorm(p=1-alpha/2)^2)
+lower.wilson <- pi.tilde - qnorm(p = 1- alpha / 2) * sqrt(n)/(n+qnorm(p=1-alpha/2)^2)*sqrt(pi.hat*(1-pi.hat)+qnorm(1-alpha/2)^2/(4*n))
+upper.wilson <- pi.tilde + qnorm (p = 1- alpha / 2) * sqrt(n)/(n+qnorm(p=1-alpha/2)^2)*sqrt(pi.hat*(1-pi.hat)+qnorm(1-alpha/2)^2/(4*n))
+#Save true confidence level in a matrix
+save.true.conf <- matrix(data = NA, nrow = length (pi.seq), ncol = 2)
+#create the counter for the loop
+counter <- 1
+# Loop over each pi
+for ( pi in pi.seq ) {
+pmf <- dbinom(x = w, size = n, prob = pi)
+save.wilson <- ifelse(test = pi > lower.wilson, yes = ifelse(test = pi < upper.wilson, yes = 1, no = 0), no =0)
+ac <- sum(save.wilson * pmf)
+save.true.conf[counter,] <- c(pi, ac)
+#print (save.true.conf[counter,])
+counter <- counter + 1
+}
+plot(x = save.true.conf [,1], y = save.true.conf[ ,2], main = "Wilson",
+xlab = expression(pi), ylab = "True Confidence Level", type = "l", ylim = c (.85 ,1))
+abline(h = 1 - alpha, lty = "dotted")
+```
+
+#Part 5, Page 52, Question 13, part b, Agresti-Coull
+```{r}
+alpha <- 0.05
+n <- 40
+w <- 0: n
+pi.hat <- w / n
+pi.seq <- seq ( from = .001 , to = .999 , by = .0005)
+#Agresti-Goull
+pi.tilde<-(w+qnorm(p=1-alpha/2)^2/2)/(n+qnorm(p=1-alpha/2)^2)
+var.ac<-pi.tilde*(1-pi.tilde)/(n+qnorm(p=1-alpha/2) ^2)
+lower.ac <- pi.tilde - qnorm(p = 1- alpha / 2) * sqrt (var.ac)
+upper.ac <- pi.tilde + qnorm (p = 1- alpha / 2) * sqrt (var.ac)
+#Save true confidence level in a matrix
+save.true.conf <- matrix(data = NA, nrow = length (pi.seq), ncol = 2)
+#create the counter for the loop
+counter <- 1
+# Loop over each pi
+for ( pi in pi.seq ) {
+pmf <- dbinom(x = w, size = n, prob = pi)
+save.ac <- ifelse(test = pi > lower.ac, yes = ifelse(test = pi < upper.ac, yes = 1, no = 0), no =0)
+ac <- sum(save.ac * pmf)
+save.true.conf[counter,] <- c(pi, ac)
+#print (save.true.conf[counter,])
+counter <- counter + 1
+}
+plot(x = save.true.conf [,1], y = save.true.conf[ ,2], main = "Agresti-Coull",
+xlab = expression(pi), ylab = "True Confidence Level", type = "l", ylim = c (.85 ,1))
+abline(h = 1 - alpha, lty = "dotted")
+```
+
